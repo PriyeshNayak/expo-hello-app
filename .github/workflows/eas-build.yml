@@ -22,7 +22,6 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Build on EAS
-        # run: eas build --platform all --non-interactive --no-wait
         run: eas build --platform android --no-wait
 
   update:
@@ -35,24 +34,19 @@ jobs:
             echo "You must provide an EXPO_TOKEN secret linked to this project's Expo account in this repo's secrets. Learn more: https://docs.expo.dev/eas-update/github-actions"
             exit 1
           fi
-
       - name: Checkout repository
         uses: actions/checkout@v4
-
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 18.x
-          cache: yarn
-
+          cache: npm
       - name: Setup EAS
         uses: expo/expo-github-action@v8
         with:
           eas-version: latest
           token: ${{ secrets.EXPO_TOKEN }}
-
       - name: Install dependencies
-        run: yarn install
-
+        run: npm ci
       - name: Publish update
         run: eas update --auto
